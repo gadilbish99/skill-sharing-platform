@@ -11,8 +11,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Footer() {
+export default function Footer(props) {
   const classes = useStyles();
+  const { title } = props;
 
   return (
     <footer className={classes.footer}>
@@ -21,7 +22,7 @@ export default function Footer() {
           Designed by Ganbold Adilbish.
         </Typography>
         <Typography variant="body2" color="textSecondary" align="center">
-          {`Copyright © ${new Date().getFullYear()} My Blog`}
+          {`Copyright © ${new Date().getFullYear()} ${title}`}
         </Typography>
       </Container>
     </footer>
