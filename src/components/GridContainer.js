@@ -2,6 +2,10 @@ import Grid from '@material-ui/core/Grid';
 import Card from './Card';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
+// import {
+//   useParams
+// } from "react-router-dom";
+import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -23,10 +27,16 @@ const mockPosts = Array(5).fill(mockPost);
 export default function GridContainer() {
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // let { topic } = useParams();
+  // topic = topic || '';
 
   useEffect(() => {
     setPosts(mockPosts);
+    setLoading(false);
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <Grid container spacing={5}  className={classes.gridContainer}>
