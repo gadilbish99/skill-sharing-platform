@@ -10,6 +10,7 @@ import { EDITOR_JS_TOOLS } from '../Utils/tools'
 import Box from '@material-ui/core/Box';
 import { useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
+import { getPost } from '../Services/service';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -24,10 +25,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const title="Love you";
-const image="https://bit.ly/39VxniL";
-const body = localStorage.getItem('data');
-
 export default function Post() {
   const classes = useStyles();
   const { id } = useParams();
@@ -35,9 +32,14 @@ export default function Post() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Body ' + id);
-    setData({title: title, image: image, body: JSON.parse(body)})
-    setLoading(false);
+    async function fetchPost(id) {
+      const post = await getPost(id);
+      const { title, image, body } = post;
+      setData({title: title, image: image, body: JSON.parse(body)});
+      setLoading(false);
+    }
+    fetchPost(id);
+
   }, [id]);
 
   if (loading) return <Loading />;

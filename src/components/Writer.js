@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import Alert from './Alert';
 import Typography from '@material-ui/core/Typography';
 import uploadImage from "../Utils/imageUploader";
+import { postBlog } from "../Services/service";
 
 const initialState = {
   title: '',
@@ -114,12 +115,13 @@ export default function Writer() {
       setWarning({...warning, body: ''});
   }
 
-  function publish() {
+  async function publish() {
     const finalData = {...data, body: isEmpty() ? '' : JSON.stringify(data.body)}
     const {isValid, newWarning} = performFinalValidation(finalData);
 
     if (isValid) {
-      console.log('Published');
+      const response = await postBlog(finalData);
+      console.log(response);
       history.push('/');
     }
     else

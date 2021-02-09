@@ -19,3 +19,21 @@ export async function upload(formData) {
         throw error;
     }
 }
+
+export async function postBlog(formData) {
+    try {
+        const response = await axios.post(BASE_URL + '/post', formData, DEFAULT_CONFIG);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getPost(id) {
+    try {
+        const response = await axios.get(BASE_URL + '/post/' + id, DEFAULT_CONFIG);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

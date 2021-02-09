@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 //   useParams
 // } from "react-router-dom";
 import Loading from '../components/Loading';
+import { getPosts } from '../Services/service';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -16,14 +17,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const mockPost = {
-    summary: "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    title: "My Post",
-    image: "https://bit.ly/39VxniL"
-};
-
-const mockPosts = Array(5).fill(mockPost); 
-
 export default function GridContainer() {
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
@@ -32,8 +25,12 @@ export default function GridContainer() {
   // topic = topic || '';
 
   useEffect(() => {
-    setPosts(mockPosts);
-    setLoading(false);
+    async function fetchPosts() {
+      const posts = await getPosts();
+      setPosts(posts);
+      setLoading(false);
+    }
+    fetchPosts();
   }, []);
 
   if (loading) return <Loading />;
@@ -42,7 +39,7 @@ export default function GridContainer() {
     <Grid container spacing={5}  className={classes.gridContainer}>
         {posts.map((post, id) => (
           <Grid item sm={12} md={8} key={id}>
-            <Card title={post.title} image={post.image} summary={post.summary}/>
+            <Card title={post.title} image={post.image} summary={post.summary} id={post._id}/>
           </Grid>
         ))}
     </Grid>    
