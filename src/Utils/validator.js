@@ -1,8 +1,8 @@
 import * as EmailValidator from 'email-validator';
 
-const MAX_TEXT_LENGTH = 10;
-const MAX_PASSWORD_LENGTH = 10;
-const MAX_EMAIL_LENGTH = 20;
+const MAX_TEXT_LENGTH = 100;
+const MAX_PASSWORD_LENGTH = 200;
+const MAX_EMAIL_LENGTH = 200;
 const MIN_LENGTH = 0;
 
 const nameTranslation = {
