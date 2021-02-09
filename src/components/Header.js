@@ -60,6 +60,9 @@ export default function Header(props) {
           {title}
         </Typography>
         <Box className={classes.buttonGroup}>
+          <Button size="small" href="/">
+            Home
+          </Button>
           <Button size="small" href="/write">
             Write
           </Button>
