@@ -12,6 +12,7 @@ import { validateInputChange, performFinalValidation} from '../Utils/validator';
 import { useHistory } from 'react-router-dom';
 import Alert from './Alert';
 import Typography from '@material-ui/core/Typography';
+import uploadImage from "../Utils/imageUploader";
 
 const initialState = {
   title: '',
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'left',
   },
   root: {
-    marginTop: theme.spacing(10),
+    // marginTop: theme.spacing(10),
     marginBottom: theme.spacing(-25)
   },
   button: {
@@ -97,13 +98,17 @@ export default function Writer() {
     setWarning({...warning, [id]: resultMsg});
   }
 
-  function uploadImage(event) {
-    const image = event.target.files[0];
-    setImageName(image.name);
-    if (URL.createObjectURL(image)) {
-      setData({...data, image: URL.createObjectURL(image)})
-    }
-    setWarning({...warning, image: ''});
+  async function handleImage(event) {
+    event.preventDefault();
+    const { uploadedImageName, imageUrl } = await uploadImage(event);
+
+    console.log(uploadedImageName, imageUrl);
+    
+    setImageName(uploadedImageName);
+    // if (URL.createObjectURL(image)) {
+    //   setData({...data, image: URL.createObjectURL(image)})
+    // }
+    // setWarning({...warning, image: ''});
   }
 
   async function onChange() {
@@ -137,7 +142,7 @@ export default function Writer() {
         error={!!warning.title}
         onChange={handleInputChange}
       />
-      <ImageUpload onChange={uploadImage}/>
+      <ImageUpload onChange={handleImage}/>
       <Alert warning={warning.image} />
       {imageName && 
       <Typography variant="body2">
