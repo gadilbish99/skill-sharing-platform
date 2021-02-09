@@ -9,7 +9,10 @@ const nameTranslation = {
     firstName: "Name",
     lastName: "Name",
     email: "Email",
-    password: "Password"
+    password: "Password",
+    title: 'Title',
+    image: 'Image',
+    body: 'Post'
 };
 
 const ACCEPTED_RESULT = {
@@ -46,7 +49,7 @@ function isValidEmail(text) {
 export function validateInputChange(text, type) {
     if (typeof text === 'undefined' || typeof type === 'undefined') 
         return UNDEFINED_RESULT;
-    else if (type === 'text' && text.length <= MAX_TEXT_LENGTH)
+    else if ((type === 'text' || type === 'textarea') && text.length <= MAX_TEXT_LENGTH)
         return ACCEPTED_RESULT;
     else if (type === 'password' && text.length <= MAX_PASSWORD_LENGTH)
         return ACCEPTED_RESULT;
