@@ -7,7 +7,7 @@ import Code from '@editorjs/code'
 import Header from '@editorjs/header'
 import InlineCode from '@editorjs/inline-code'
 import Raw from '@editorjs/raw'
-import LinkTool from '@editorjs/link'
+// import LinkTool from '@editorjs/link'
 import Quote from '@editorjs/quote'
 import Marker from '@editorjs/marker'
 import CheckList from '@editorjs/checklist'
@@ -22,7 +22,7 @@ export const EDITOR_JS_TOOLS = {
   table: Table,
   list: List,
   warning: Warning,
-  linkTool: LinkTool,
+  // linkTool: LinkTool,
   quote: Quote,
   marker: Marker,
   checklist: CheckList,
