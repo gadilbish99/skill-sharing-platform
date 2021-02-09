@@ -14,7 +14,7 @@ export async function getPosts() {
 export async function upload(formData) {
     try {
         const response = await axios.post(BASE_URL + '/upload', formData, UPLOAD_CONFIG);
-        return response.data;
+        return BASE_URL + '/' + response.data;
     } catch (error) {
         throw error;
     }

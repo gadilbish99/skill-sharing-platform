@@ -101,14 +101,10 @@ export default function Writer() {
   async function handleImage(event) {
     event.preventDefault();
     const { uploadedImageName, imageUrl } = await uploadImage(event);
-
-    console.log(uploadedImageName, imageUrl);
     
     setImageName(uploadedImageName);
-    // if (URL.createObjectURL(image)) {
-    //   setData({...data, image: URL.createObjectURL(image)})
-    // }
-    // setWarning({...warning, image: ''});
+    setData({...data, image: imageUrl})
+    setWarning({...warning, image: ''});
   }
 
   async function onChange() {

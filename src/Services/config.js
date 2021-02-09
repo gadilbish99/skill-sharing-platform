@@ -8,6 +8,6 @@ export const DEFAULT_CONFIG = {
 
 export const UPLOAD_CONFIG = {
     headers: {
-        'content-type': 'multipart/form-data'
+        'Content-type': 'multipart/form-data'
     }
 }
