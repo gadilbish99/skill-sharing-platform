@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 const COOKIE_NAME = 'access_token'
 
 export function getToken() {
-    return Cookies.get(COOKIE_NAME)
+    return Cookies.get(COOKIE_NAME) || ''
 }
 
 export function setToken(token) {
