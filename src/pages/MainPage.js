@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -10,9 +10,10 @@ import {
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import GridContainer from '../components/GridContainer';
-
 import Writer from '../components/Writer';
 import Post from '../components/Post';
+
+import { UserContext } from '../App';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles(() => ({
 export default function MainPage() {
   const classes = useStyles();
   const title = "My Blog";
+  const [user] = useContext(UserContext);
 
   return (
     <React.Fragment>
@@ -34,7 +36,7 @@ export default function MainPage() {
           <Header title={title}/>
           <Switch>
             <Route exact path="/" component={GridContainer} />
-            <Route path="/write" component={Writer} />
+            <Route path="/write" component={!!user.accesstoken ? Writer : GridContainer}/>
             <Route path="/post/:id" component={Post} /> 
             <Route path="/:topic" component={GridContainer} />
           </Switch>
