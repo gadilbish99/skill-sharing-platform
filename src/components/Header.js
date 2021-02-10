@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
+import { UserContext } from '../App';
+import { removeToken } from "../Utils/cookie";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -43,9 +45,14 @@ const sections = [
   { title: 'Travel'},
 ];
 
-export default function Header(props) {
+export default function Header({ title }) {
   const classes = useStyles();
-  const { title } = props;
+  const [user, setUser] = useContext(UserContext);
+
+  function logout() {
+    removeToken();
+    setUser({});
+  }
 
   return (
     <React.Fragment>
@@ -63,15 +70,25 @@ export default function Header(props) {
           <Button size="small" href="/">
             Home
           </Button>
-          <Button size="small" href="/write">
-            Write
-          </Button>
-          <Button size="small" href="/signin">
-            Sign In
-          </Button>
-          <Button variant="contained" size="small" color="primary" href="/signup">
-            Get Started
-          </Button>
+          {!!user.accesstoken ? (
+            <React.Fragment>
+              <Button size="small" href="/write">
+                Write
+              </Button>
+              <Button variant="contained" size="small" color="primary" onClick={logout}>
+                Log Out
+              </Button>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Button size="small" href="/signin">
+                Sign In
+              </Button>
+              <Button variant="contained" size="small" color="primary" href="/signup">
+                Get Started
+              </Button>
+            </React.Fragment>
+          )}          
         </Box>
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
