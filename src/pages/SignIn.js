@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,10 +12,21 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import {validateInputChange, performFinalValidation} from '../Utils/validator'
+import { UserContext } from '../App';
+import { login } from "../Services/service";
+import { useHistory } from 'react-router-dom';
+import { setToken } from '../Utils/cookie';
+import Alert from '../components/Alert';
 
 const initialState = {
   email: '',
   password: ''
+}
+
+const warningInitialState = {
+  email: '',
+  password: '',
+  response: ''
 }
   
 const useStyles = makeStyles((theme) => ({
@@ -51,8 +62,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const setUser = useContext(UserContext)[1];
   const [credential, setCredential] = useState(initialState);
-  const [warning, setWarning] = useState(initialState);
+  const [warning, setWarning] = useState(warningInitialState);
+  const history = useHistory();
 
   function handleInputChange(event) {
     const {value, type, id} = event.target;
@@ -64,12 +77,21 @@ export default function SignIn() {
     setWarning({...warning, [id]: resultMsg});
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const {isValid, newWarning} = performFinalValidation(credential);
 
-    if (isValid)
-      console.log("Signed In");
+    if (isValid) {
+      const result = await login(credential);
+      if (result.accesstoken) {
+        setUser(result);
+        setToken(result.accesstoken);
+        history.push('/');
+      } else {
+        setWarning({...warning, response: result.error});
+      }
+      
+    }
     else 
       setWarning(newWarning);
   }
@@ -122,6 +144,7 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            <Alert warning={warning.response}/>
             <Button
               type="submit"
               fullWidth
