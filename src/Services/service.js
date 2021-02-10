@@ -12,7 +12,7 @@ export async function getPosts() {
 
 export async function upload(formData) {
     try {
-        const response = await axios.post(API_URL + '/upload', formData, AUTH_CONFIG);
+        const response = await axios.post(API_URL + '/upload', formData, UPLOAD_CONFIG);
         return BASE_URL + '/' + response.data;
     } catch (error) {
         throw error;

@@ -13,6 +13,7 @@ export const DEFAULT_CONFIG = {
 export const UPLOAD_CONFIG = {
     headers: {
         'Content-type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + getToken()
     },
     withCredentials: 'include'
 }
