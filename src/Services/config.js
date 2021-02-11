@@ -6,6 +6,7 @@ export const API_URL = 'http://localhost:4000/api/v1';
 export const DEFAULT_CONFIG = {
     headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
     },
     withCredentials: 'include'
 }
@@ -13,14 +14,6 @@ export const DEFAULT_CONFIG = {
 export const UPLOAD_CONFIG = {
     headers: {
         'Content-type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + getToken()
-    },
-    withCredentials: 'include'
-}
-
-export const AUTH_CONFIG = {
-    headers: {
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + getToken()
     },
     withCredentials: 'include'
