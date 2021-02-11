@@ -15,12 +15,12 @@ export function removeToken() {
 }
 
 export function isLoggedIn() {
-    return !!Cookies.get(COOKIE_NAME)
+    return !!getToken()
 }
 
 export function isAccessTokenExpired() {
     if (isLoggedIn()) {
-        const { exp } = jwt_decode(this.getToken())
+        const { exp } = jwt_decode(getToken())
         return (exp - Date.now() / 1000 ) <= 0
     }
     else {
