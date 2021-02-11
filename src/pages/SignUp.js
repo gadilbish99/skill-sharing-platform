@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useState } from 'react';
 import {validateInputChange, performFinalValidation} from '../Utils/validator'
+import { signUp } from "../Services/service";
+import { useHistory } from 'react-router-dom';
 
 const initialState = {
   firstName: '', 
@@ -42,6 +44,7 @@ export default function SignUp() {
   const classes = useStyles();
   const [data, setData] = useState(initialState);
   const [warning, setWarning] = useState(initialState);
+  const history = useHistory();
 
   function handleInputChange(event) {
     const {value, type, id} = event.target;
@@ -57,8 +60,10 @@ export default function SignUp() {
     event.preventDefault();
     const {isValid, newWarning} = performFinalValidation(data);
 
-    if (isValid)
-      console.log("Signed Up");
+    if (isValid) {
+      signUp(data);
+      history.push('/signin');
+    }
     else 
       setWarning(newWarning);
   }
