@@ -84,8 +84,8 @@ export default function SignIn() {
     if (isValid) {
       const result = await login(credential);
       if (result.accesstoken) {
-        setUser(result);
         setToken(result.accesstoken);
+        setUser(result);
         history.push('/');
       } else {
         setWarning({...warning, response: result.error});
