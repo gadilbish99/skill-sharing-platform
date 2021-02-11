@@ -154,7 +154,7 @@ export default function Writer() {
                 onChange={onChange} 
                 instanceRef={(instance) => (instanceRef.current = instance)} 
                 tools={EDITOR_JS_TOOLS}
-                autofocus
+                placeholder="Write something"
               />
             </Box>
           </CardContent>
