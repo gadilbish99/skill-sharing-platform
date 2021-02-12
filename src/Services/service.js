@@ -1,11 +1,17 @@
 import axios from "axios";
 import { API_URL, BASE_URL, DEFAULT_CONFIG, UPLOAD_CONFIG } from "./config";
-import { getToken, setToken, isAccessTokenExpired } from "../Utils/cookie";
+import { getToken, setToken, removeToken, isAccessTokenExpired } from "../Utils/cookie";
 
 axios.interceptors.request.use(async (config) => {
     if(isAccessTokenExpired() && config.url !== API_URL + '/user/refresh_token') {
-        const { accesstoken } = await refreshToken();
-        setToken(accesstoken);
+        try {
+            const { accesstoken } = await refreshToken();
+            setToken(accesstoken);
+        } catch (error) {
+            console.log(error);
+            removeToken();
+            return Promise.reject(error);
+        }
     }
 
     if (getToken()) {
@@ -24,6 +30,16 @@ axios.interceptors.response.use(async (response) => {
     return response;
 }, async (error) => {
     const originalRequest = error.config;
+    // If a refresh token is expired
+    if (error.response.status === 401 && originalRequest.url === API_URL + '/user/refresh_token') {
+        console.log(error.response);
+        removeToken();
+        return Promise.reject(error);
+    }
+
+    // If status code is 401, 
+    // get a new refresh token 
+    // and retry the original request 
     if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
