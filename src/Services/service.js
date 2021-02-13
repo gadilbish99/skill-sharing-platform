@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, BASE_URL, DEFAULT_CONFIG, UPLOAD_CONFIG } from "./config";
+import { API_URL, DEFAULT_CONFIG, UPLOAD_CONFIG } from "./config";
 import { getToken, setToken, removeToken, isAccessTokenExpired } from "../Utils/cookie";
 
 axios.interceptors.request.use(async (config) => {
@@ -27,12 +27,13 @@ axios.interceptors.request.use(async (config) => {
 });
 
 axios.interceptors.response.use(async (response) => {
+    console.log(response)
     return response;
 }, async (error) => {
+    console.log(error.response)
     const originalRequest = error.config;
     // If a refresh token is expired
     if (error.response.status === 401 && originalRequest.url === API_URL + '/user/refresh_token') {
-        console.log(error.response);
         removeToken();
         return Promise.reject(error);
     }
@@ -67,9 +68,9 @@ export async function getPosts() {
 export async function upload(formData) {
     try {
         const response = await axios.post(API_URL + '/upload', formData, UPLOAD_CONFIG);
-        return BASE_URL + '/' + response.data;
+        return response.data; 
     } catch (error) {
-        throw error;
+        throw error.response.data;
     }
 }
 

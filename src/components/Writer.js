@@ -70,6 +70,12 @@ function ImageUpload({onChange}) {
           Upload Image
         </Button>
       </label>
+      <Typography 
+        variant="caption" 
+        component="div"
+      >
+        Maximum upload file size: 5MB
+      </Typography>
     </Box>
   );
 }
@@ -101,11 +107,15 @@ export default function Writer() {
 
   async function handleImage(event) {
     event.preventDefault();
-    const { uploadedImageName, imageUrl } = await uploadImage(event);
-    
-    setImageName(uploadedImageName);
-    setData({...data, image: imageUrl})
-    setWarning({...warning, image: ''});
+    const result = await uploadImage(event);
+
+    if(result.imageUrl) {
+      setImageName(result.uploadedImageName);
+      setData({...data, image: result.imageUrl})
+      setWarning({...warning, image: ''});
+    }
+    else 
+      setWarning({...warning, image: result.error});
   }
 
   async function onChange() {
