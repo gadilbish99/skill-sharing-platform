@@ -54,7 +54,7 @@ function ImageUpload({onChange}) {
   return (
     <Box>
       <input
-        accept="image/*"
+        accept=".jpg, .jpeg, .png, .gif"
         className={classes.input}
         id="contained-button-file"
         multiple
