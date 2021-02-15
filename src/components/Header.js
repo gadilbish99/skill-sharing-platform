@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import { UserContext } from '../App';
-import { removeToken } from "../Utils/cookie";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -47,12 +46,8 @@ const sections = [
 
 export default function Header({ title }) {
   const classes = useStyles();
-  const [user, setUser] = useContext(UserContext);
-
-  function logout() {
-    removeToken();
-    setUser({});
-  }
+  const [user] = useContext(UserContext);
+  const isLoggedIn = !!user.accesstoken;
 
   return (
     <React.Fragment>
@@ -70,12 +65,12 @@ export default function Header({ title }) {
           <Button size="small" href="/">
             Home
           </Button>
-          {!!user.accesstoken ? (
+          {isLoggedIn ? (
             <React.Fragment>
               <Button size="small" href="/write">
                 Write
               </Button>
-              <Button variant="contained" size="small" color="primary" onClick={logout}>
+              <Button variant="contained" size="small" color="primary" href="/logout">
                 Log Out
               </Button>
             </React.Fragment>
