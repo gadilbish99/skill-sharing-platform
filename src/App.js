@@ -15,13 +15,14 @@ export const UserContext = createContext([]);
 
 function App() {
   const [user, setUser] = useState({accesstoken: getToken()});
+  const isLoggedIn = !!user.accesstoken;
 
   return (
     <UserContext.Provider value={[user, setUser]}>
       <Router>
         <Switch>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={isLoggedIn ? MainPage : SignUp} />
+          <Route path="/signin" component={isLoggedIn ? MainPage : SignIn} />
           <Route path="/" component={MainPage} />
         </Switch>
       </Router>

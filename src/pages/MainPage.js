@@ -14,6 +14,7 @@ import Writer from '../components/Writer';
 import Post from '../components/Post';
 
 import { UserContext } from '../App';
+import Logout from '../components/Logout';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,6 +28,7 @@ export default function MainPage() {
   const classes = useStyles();
   const title = "My Blog";
   const [user] = useContext(UserContext);
+  const isLoggedIn = !!user.accesstoken;
 
   return (
     <React.Fragment>
@@ -36,7 +38,8 @@ export default function MainPage() {
           <Header title={title}/>
           <Switch>
             <Route exact path="/" component={GridContainer} />
-            <Route path="/write" component={!!user.accesstoken ? Writer : GridContainer}/>
+            <Route path ="/logout" component={Logout} />
+            <Route path="/write" component={isLoggedIn ? Writer : GridContainer}/>
             <Route path="/post/:id" component={Post} /> 
             <Route path="/:topic" component={GridContainer} />
           </Switch>
