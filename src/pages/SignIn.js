@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const setUser = useContext(UserContext)[1];
-  const [credential, setCredential] = useState(initialState);
+  const [credentials, setCredentials] = useState(initialState);
   const [warning, setWarning] = useState(warningInitialState);
   const history = useHistory();
 
@@ -72,25 +72,24 @@ export default function SignIn() {
     const {canAddInput, resultMsg} = validateInputChange(value, type);
 
     if (canAddInput)
-        setCredential({...credential, [id]: value});
+        setCredentials({...credentials, [id]: value});
 
     setWarning({...warning, [id]: resultMsg});
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const {isValid, newWarning} = performFinalValidation(credential);
+    const {isValid, newWarning} = performFinalValidation(credentials);
 
     if (isValid) {
-      const result = await login(credential);
-      if (result.accesstoken) {
+      try {
+        const result = await login(credentials);
         setToken(result.accesstoken);
         setUser(result);
         history.push('/');
-      } else {
-        setWarning({...warning, response: result.error});
+      } catch (errorMsg) {
+        setWarning({...warning, response: errorMsg})
       }
-      
     }
     else 
       setWarning(newWarning);
@@ -120,7 +119,7 @@ export default function SignIn() {
               autoComplete="email"
               autoFocus
               type="email"
-              value={credential.email}
+              value={credentials.email}
               onChange={handleInputChange}
               helperText={warning.email}
               error={!!warning.email}
@@ -135,7 +134,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={credential.password}
+              value={credentials.password}
               onChange={handleInputChange}
               helperText={warning.password}
               error={!!warning.password}
