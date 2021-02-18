@@ -3,7 +3,7 @@ import { API_URL, DEFAULT_CONFIG, UPLOAD_CONFIG } from "./config";
 import { getToken, setToken, removeToken, isAccessTokenExpired } from "../Utils/cookie";
 
 axios.interceptors.request.use(async (config) => {
-    if(isAccessTokenExpired() && config.url !== API_URL + '/user/refresh_token') {
+    if(isAccessTokenExpired() && config.url !== API_URL + '/auth/refresh_token') {
         try {
             const { accesstoken } = await refreshToken();
             setToken(accesstoken);
@@ -17,8 +17,7 @@ axios.interceptors.request.use(async (config) => {
     if (getToken()) {
         config.headers = {
             'Authorization': `Bearer ${getToken()}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
     }
     return config;
@@ -33,7 +32,7 @@ axios.interceptors.response.use(async (response) => {
     console.log(error.response)
     const originalRequest = error.config;
     // If a refresh token is expired
-    if (error.response.status === 401 && originalRequest.url === API_URL + '/user/refresh_token') {
+    if (error.response.status === 401 && originalRequest.url === API_URL + '/auth/refresh_token') {
         removeToken();
         return Promise.reject(error);
     }
@@ -106,14 +105,14 @@ export async function login(formData) {
         const response = await axios.post(API_URL + '/user/login', formData, DEFAULT_CONFIG);
         return response.data;
     } catch (error) {
-        throw error;
+        throw error.response.data.error;
     }
 }
 
 export async function refreshToken() {
     try {
         const response = await axios({
-            url: API_URL + '/user/refresh_token',
+            url: API_URL + '/auth/refresh_token',
             method: 'post',
             headers: DEFAULT_CONFIG.headers,
             withCredentials: 'include'
